@@ -5,6 +5,8 @@
  */
 package br.com.asfmegas.asfenglish.view;
 
+import br.com.asfmegas.asfenglish.bean.Dados;
+import br.com.asfmegas.asfenglish.dao.DadosDAO;
 import br.com.asfmegas.asfenglish.util.Arquivo;
 import java.io.IOException;
 import javax.swing.JFileChooser;
@@ -18,7 +20,7 @@ import javax.swing.JOptionPane;
 public class Principal extends javax.swing.JFrame {
     private String arquivo;
     public Principal() {
-        setTitle("tradução de textos");
+        setTitle("Tradução de Textos");
         
         setResizable(false);
         initComponents();
@@ -89,6 +91,11 @@ public class Principal extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton1.setText("Salvar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton2.setText("Alterar");
@@ -98,6 +105,11 @@ public class Principal extends javax.swing.JFrame {
 
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton4.setText("Limpar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -252,6 +264,15 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jtPesquisaFocusLost
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       if(!jtTitulo.getText().equals(""))
+            salvar();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -322,5 +343,23 @@ public class Principal extends javax.swing.JFrame {
         }catch(IOException e){
             JOptionPane.showMessageDialog(null,"Erro ao salvar arquivo");
         }
+    }
+    
+    private void salvar(){
+        DadosDAO dao = new DadosDAO();
+        Dados dados = new Dados();
+        
+        dados.setPalavra(jtTitulo.getText());
+        dados.setTexto(jtConteudo.getText());
+        
+        dao.salvarDados(dados);
+        JOptionPane.showMessageDialog(null, "Dados salvos com sucesso!");
+    }
+    
+    private void limparCampos(){
+        jtConteudo.setText("");
+        jtPesquisa.setText("Pesquisar");
+        jtTitulo.setText("");
+        jtConteudo.setText("");
     }
 }
